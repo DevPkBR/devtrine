@@ -1,12 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 
-const projects = [
-  { title: "Cittadoc", description: "Análise inteligente de documentos e construção de árvores genealógicas em um só lugar.", author: "Marina Costa", role: "Product Designer", initials: "MC", technologies: ["Next.js", "TypeScript", "IA"], likes: 128, saves: 36, tone: "violet", symbol: "C" },
-  { title: "Plantaria", description: "Planeje hortas urbanas, acompanhe cultivos e compartilhe colheitas com sua comunidade.", author: "Lucas Nunes", role: "Full-stack Developer", initials: "LN", technologies: ["React", "Supabase", "PWA"], likes: 94, saves: 21, tone: "green", symbol: "P" },
-  { title: "Orbit Finance", description: "Um painel simples e visual para entender para onde seu dinheiro está indo.", author: "Ana Ribeiro", role: "Front-end Developer", initials: "AR", technologies: ["Next.js", "PostgreSQL", "Charts"], likes: 76, saves: 18, tone: "orange", symbol: "O" },
-];
-
 function Logo() {
   return <span className="logo-mark" aria-hidden="true"><i /><i /><i /></span>;
 }
@@ -25,8 +19,26 @@ function BookmarkIcon() {
 
 export default async function Home() {
   const supabase = await createClient();
-  const { data } = await supabase.auth.getUser();
+  const [{ data }, { data: projects }, { data: categories }] = await Promise.all([
+    supabase.auth.getUser(),
+    supabase.from("projects").select("id, title, description, thumbnail_path, author_id, profiles!projects_author_id_fkey(name, username), project_technologies(technologies(name)), project_likes(count), saved_projects(count)").eq("status", "published").order("published_at", { ascending: false }).limit(9),
+    supabase.from("categories").select("id, name, slug").order("name"),
+  ]);
   const destination = data.user ? "/dashboard" : "/login";
+  const projectCards = (projects ?? []).map((project) => {
+    const author = Array.isArray(project.profiles) ? project.profiles[0] : project.profiles;
+    return {
+      ...project,
+      author,
+      thumbnailUrl: supabase.storage.from("project-thumbnails").getPublicUrl(project.thumbnail_path).data.publicUrl,
+      technologies: project.project_technologies.map((relation) => {
+        const technology = Array.isArray(relation.technologies) ? relation.technologies[0] : relation.technologies;
+        return technology?.name;
+      }).filter(Boolean),
+      likes: project.project_likes[0]?.count ?? 0,
+      saves: project.saved_projects[0]?.count ?? 0,
+    };
+  });
 
   return (
     <div className="site-shell">
@@ -54,22 +66,24 @@ export default async function Home() {
         </section>
 
         <section className="feed" id="projetos" aria-labelledby="feed-title">
-          <div className="section-heading"><div><span className="section-kicker">Em destaque</span><h2 id="feed-title">Projetos para descobrir</h2></div><a href="#recentes">Ver todos <ArrowIcon /></a></div>
-          <div className="filters" aria-label="Filtrar projetos"><button className="selected" type="button">Todos</button><button type="button">Web</button><button type="button">Mobile</button><button type="button">Design</button><button type="button">Open source</button></div>
+          <div className="section-heading"><div><span className="section-kicker">Mais recentes</span><h2 id="feed-title">Projetos para descobrir</h2></div><Link href="/explorar">Ver todos <ArrowIcon /></Link></div>
+          <div className="filters" aria-label="Filtrar projetos"><Link className="selected" href="/explorar">Todos</Link>{(categories ?? []).map((category) => <Link href={`/explorar?categoria=${category.slug}`} key={category.id}>{category.name}</Link>)}</div>
           <div className="project-grid" id="recentes">
-            {projects.map((project) => (
-              <article className="project-card" key={project.title}>
-                <a className={"project-preview " + project.tone} href="#" aria-label={"Abrir projeto " + project.title}>
-                  <span className="preview-grid" /><span className="preview-glow" /><strong>{project.symbol}</strong><span className="visit-label">Visitar projeto <ArrowIcon /></span>
-                </a>
+            {projectCards.map((project) => (
+              <article className="project-card" key={project.id}>
+                <Link className="project-preview" href={`/projetos/${project.id}`} aria-label={"Abrir projeto " + project.title}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={project.thumbnailUrl} alt="" /><span className="visit-label">Ver detalhes <ArrowIcon /></span>
+                </Link>
                 <div className="project-body">
-                  <div className="project-title-row"><h3>{project.title}</h3><button type="button" aria-label={"Salvar " + project.title}><BookmarkIcon /></button></div>
+                  <div className="project-title-row"><h3><Link href={`/projetos/${project.id}`}>{project.title}</Link></h3></div>
                   <p>{project.description}</p>
-                  <ul>{project.technologies.map((technology) => <li key={technology}>{technology}</li>)}</ul>
-                  <footer><div className="author"><span>{project.initials}</span><p><strong>{project.author}</strong><small>{project.role}</small></p></div><div className="metrics"><span><HeartIcon /> {project.likes}</span><span><BookmarkIcon /> {project.saves}</span></div></footer>
+                  <ul>{project.technologies.slice(0, 4).map((technology) => <li key={technology}>{technology}</li>)}</ul>
+                  <footer><Link className="author" href={project.author?.username ? `/perfil/${project.author.username}` : "#"}><span>{project.author?.name?.slice(0, 2).toUpperCase() ?? "DV"}</span><p><strong>{project.author?.name ?? "Pessoa Devtrine"}</strong><small>@{project.author?.username ?? "devtrine"}</small></p></Link><div className="metrics"><span><HeartIcon /> {project.likes}</span><span><BookmarkIcon /> {project.saves}</span></div></footer>
                 </div>
               </article>
             ))}
+            {projectCards.length === 0 ? <div className="feed-empty"><h3>Os primeiros projetos estão chegando.</h3><p>Publique o seu e inaugure esta vitrine.</p><Link className="primary-button" href={destination}>Publicar projeto</Link></div> : null}
           </div>
         </section>
 
