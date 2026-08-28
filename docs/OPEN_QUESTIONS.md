@@ -21,7 +21,6 @@ Somente decisões realmente não resolvidas devem permanecer aqui.
 
 ## Infraestrutura
 
-- Plataforma final de hospedagem do aplicativo.
 - Endereço público provisório do MVP.
 - Configuração dos ambientes de desenvolvimento e produção.
 
