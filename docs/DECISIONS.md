@@ -81,8 +81,9 @@ Estado atual:
 - GitHub Actions executa instalação, lint, typecheck e build.
 - Clientes Supabase para browser e servidor e renovação de sessão estão configurados.
 - O schema inicial, RLS e buckets estão versionados como migration.
-- Interfaces e ações de autenticação, recuperação de senha e onboarding estão implementadas.
-- A aplicação ainda precisa receber as credenciais do projeto Supabase nos ambientes e ter o Google habilitado no painel.
+- Interfaces e ações de autenticação, recuperação de senha e onboarding estão implementadas e validadas em produção.
+- Google OAuth e credenciais públicas do Supabase estão configurados no ambiente Cloudflare.
+- O dashboard autenticado é o destino após login e onboarding.
 
 ## Infraestrutura
 
@@ -92,6 +93,7 @@ Estado atual:
 - O Next.js 15 será adaptado com OpenNext para preservar Server Actions, SSR e middleware sem migrar a stack para vinext/Next.js 16.
 - Artefatos `.open-next`, arquivos `.dev.vars` e credenciais nunca são versionados.
 - As variáveis públicas do Supabase são configuradas diretamente no ambiente do Worker.
+- O endereço provisório do MVP é `https://devtrine.dev-pkbr.workers.dev`.
 
 ## Desenvolvimento
 
