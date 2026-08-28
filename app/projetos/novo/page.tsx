@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "@/components/submit-button";
+import { ThumbnailInput } from "@/components/thumbnail-input";
 import { createClient } from "@/lib/supabase/server";
 import { publishProject } from "./actions";
 import "./project-form.css";
@@ -75,11 +76,7 @@ export default async function NewProjectPage({
                 <small>Separe os nomes por vírgulas.</small>
               </div>
             </div>
-            <div className="project-field file-field">
-              <label htmlFor="thumbnail">Thumbnail</label>
-              <input id="thumbnail" name="thumbnail" type="file" accept="image/jpeg,image/png,image/webp,image/avif" required />
-              <small>JPEG, PNG, WebP ou AVIF. Tamanho máximo: 500 KB.</small>
-            </div>
+            <ThumbnailInput />
             <div className="project-form-actions">
               <Link href="/dashboard">Cancelar</Link>
               <SubmitButton className="primary-button project-submit" pendingText="Publicando...">Publicar projeto</SubmitButton>
