@@ -15,7 +15,7 @@ export default async function OnboardingPage({
   if (!data.user) redirect("/login");
 
   const { data: profile } = await supabase.from("profiles").select("id").eq("id", data.user.id).maybeSingle();
-  if (profile) redirect("/");
+  if (profile) redirect("/dashboard");
   const { erro } = await searchParams;
 
   return (
