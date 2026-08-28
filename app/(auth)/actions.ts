@@ -31,7 +31,7 @@ export async function signIn(formData: FormData) {
     .eq("id", data.user.id)
     .maybeSingle();
 
-  redirect(profile ? "/" : "/onboarding");
+  redirect(profile ? "/dashboard" : "/onboarding");
 }
 
 export async function signUp(formData: FormData) {
