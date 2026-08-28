@@ -38,9 +38,26 @@ Acesso ao projeto externo deve permanecer fácil e evidente.
 
 ## Imagens
 
-- Limite definido para thumbnails: 500 KB.
+- Limite definido para thumbnails e avatares: 500 KB.
 - Formatos aceitos: JPEG/JPG, PNG, WebP e AVIF.
 - Compressão pode ser aplicada.
+- Supabase Storage possui buckets públicos separados para avatares e thumbnails.
+- Cada usuário só pode gravar ou excluir arquivos dentro da pasta identificada pelo próprio UUID.
+
+## Banco e segurança
+
+- O schema usa UUIDs e timestamps UTC.
+- Entidades: perfis, categorias, tecnologias, projetos, relação projeto-tecnologia, likes, comentários, follows, projetos salvos e denúncias.
+- Tecnologias são normalizadas para permitir filtros e evitar duplicações por projeto.
+- Projetos possuem estados `draft` e `published`.
+- Todas as tabelas públicas usam Row Level Security.
+- Perfis e projetos publicados têm leitura pública.
+- Rascunhos só podem ser lidos e alterados pelo autor.
+- Escrita de perfis e projetos é restrita ao proprietário autenticado.
+- Likes, comentários, follows e salvamentos só podem ser criados em nome do usuário autenticado.
+- Likes, comentários e salvamentos só podem apontar para projetos publicados.
+- Salvamentos e denúncias são privados para o usuário que os criou.
+- Migrations SQL são versionadas em `supabase/migrations`.
 
 ## Tecnologia
 
@@ -60,14 +77,16 @@ Estado atual:
 - Next.js, React, TypeScript e Tailwind estão configurados.
 - O lockfile está versionado.
 - GitHub Actions executa instalação, lint, typecheck e build.
-- Supabase e PostgreSQL ainda não foram integrados ao código.
+- Clientes Supabase para browser e servidor e renovação de sessão estão configurados.
+- O schema inicial, RLS e buckets estão versionados como migration.
+- A aplicação ainda precisa receber as credenciais do projeto Supabase nos ambientes.
 
 ## Infraestrutura
 
 - Não é necessário domínio próprio neste momento.
 - O MVP deve ser publicado para poder ser apresentado.
 - Cloudflare foi considerado aceitável.
-- Decisões finais de hospedagem e integração com Supabase ainda devem ser documentadas antes da implementação.
+- A hospedagem final ainda deve ser documentada antes do deploy.
 
 ## Desenvolvimento
 

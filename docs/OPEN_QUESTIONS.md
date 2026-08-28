@@ -4,24 +4,20 @@ Somente decisões realmente não resolvidas devem permanecer aqui.
 
 ## Banco e segurança
 
-- Modelo relacional final das tabelas do MVP.
-- Políticas de Row Level Security de cada tabela.
 - Estratégia de exclusão de conta e retenção de conteúdo.
-- Regras e estados da moderação básica.
+- Fluxo administrativo e permissões para revisar denúncias.
+- Regras exatas que levam aos estados de moderação.
 
 ## Feed e descoberta
 
 - Definição exata do feed híbrido: proporção e ordenação entre projetos de pessoas seguidas, recentes e descoberta.
-- Taxonomia inicial de categorias.
 - Limites de paginação.
 
 ## Projetos e imagens
 
-- Serviço definitivo de armazenamento das thumbnails.
 - Dimensões e proporção recomendadas das imagens.
 - Onde e como a compressão até 500 KB ocorrerá.
 - Quantidade máxima de tecnologias por projeto.
-- Limites de caracteres de título, descrição, bio e comentários.
 
 ## Infraestrutura
 
