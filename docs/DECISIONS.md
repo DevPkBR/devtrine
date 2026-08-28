@@ -15,13 +15,15 @@ Este documento registra decisões já aprovadas. Elas não devem ser apresentada
 ## Cadastro, autenticação e perfil
 
 - Métodos de autenticação do MVP: e-mail e senha e Google OAuth.
-- Haverá recuperação de senha/conta e logout.
-- Depois do cadastro, o usuário passa por onboarding.
+- Haverá confirmação de e-mail, recuperação de senha/conta e logout.
+- Depois do cadastro ou primeiro acesso pelo Google, o usuário passa por onboarding.
 - Nome e username são obrigatórios.
 - Username é único.
 - Avatar e bio são opcionais.
 - O perfil é criado/completado durante o onboarding, não automaticamente por trigger no cadastro.
 - O perfil pode possuir links.
+- Callbacks de autenticação só aceitam redirecionamentos internos.
+- Senhas criadas pela interface exigem pelo menos 8 caracteres.
 
 ## Projetos
 
@@ -79,7 +81,8 @@ Estado atual:
 - GitHub Actions executa instalação, lint, typecheck e build.
 - Clientes Supabase para browser e servidor e renovação de sessão estão configurados.
 - O schema inicial, RLS e buckets estão versionados como migration.
-- A aplicação ainda precisa receber as credenciais do projeto Supabase nos ambientes.
+- Interfaces e ações de autenticação, recuperação de senha e onboarding estão implementadas.
+- A aplicação ainda precisa receber as credenciais do projeto Supabase nos ambientes e ter o Google habilitado no painel.
 
 ## Infraestrutura
 
