@@ -10,7 +10,7 @@ Rede social de portfólios para mostrar projetos reais e conhecer as pessoas que
 npm install
 ```
 
-2. Copie `.env.example` para `.env.local` e informe a URL e a chave anônima do projeto Supabase.
+2. Copie `.env.example` para `.env.local` e informe a URL e a Publishable Key do projeto Supabase.
 
 3. Inicie a aplicação:
 
@@ -24,7 +24,7 @@ Abra [http://localhost:3000](http://localhost:3000) no navegador.
 
 O schema, as políticas de Row Level Security e os buckets estão em `supabase/migrations`. Aplique as migrations ao projeto Supabase com a CLI antes de usar autenticação ou dados reais.
 
-Nunca versione chaves privadas ou a service role key. O navegador utiliza somente a chave anônima pública.
+Nunca versione chaves privadas ou a service role key. O navegador utiliza somente a Publishable Key pública.
 
 ### Autenticação
 
@@ -49,3 +49,18 @@ Em desenvolvimento, permita `http://localhost:3000/auth/callback`.
 ## Documentação
 
 Antes de implementar, consulte `AGENTS.md`, `docs/PRODUCT.md`, `docs/DECISIONS.md` e `docs/OPEN_QUESTIONS.md`.
+
+## Cloudflare Workers
+
+O projeto usa OpenNext para gerar um Worker compatível com Next.js 15, Server Actions e autenticação SSR.
+
+- `npm run build:cloudflare` gera o artefato de produção.
+- `npm run preview` executa uma prévia no runtime da Cloudflare.
+- `npm run deploy` publica após autenticação segura do Wrangler.
+
+No painel da Cloudflare, configure estas variáveis no Worker sem colocá-las no GitHub:
+
+- `NEXT_PUBLIC_SUPABASE_URL`;
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`.
+
+Não adicione Secret Key, `service_role`, senha do banco ou Google Client Secret ao Worker frontend.
