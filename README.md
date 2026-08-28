@@ -26,6 +26,18 @@ O schema, as políticas de Row Level Security e os buckets estão em `supabase/m
 
 Nunca versione chaves privadas ou a service role key. O navegador utiliza somente a chave anônima pública.
 
+### Autenticação
+
+No painel do Supabase:
+
+1. defina a Site URL do ambiente;
+2. adicione `/auth/callback` às URLs de redirecionamento permitidas;
+3. mantenha e-mail e senha habilitados;
+4. habilite o Google e informe as credenciais OAuth do provedor;
+5. configure a URL de callback fornecida pelo Supabase no Google Cloud.
+
+Em desenvolvimento, permita `http://localhost:3000/auth/callback`.
+
 ## Scripts
 
 - `npm run dev` inicia o ambiente de desenvolvimento.
