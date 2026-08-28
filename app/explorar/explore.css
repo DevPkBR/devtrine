@@ -1,0 +1,21 @@
+.explore-shell { background: #f7f6f9; min-height: 100vh; }
+.explore-topbar { align-items: center; background: #fff; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; min-height: 74px; padding: 0 max(24px, calc((100vw - 1160px) / 2)); }
+.explore-topbar > a:last-child { color: var(--purple); font-size: 12px; font-weight: 750; }
+.explore-main { margin: 0 auto; max-width: 1160px; padding: 70px 24px 100px; }
+.explore-heading > span { color: var(--purple); font-size: 11px; font-weight: 850; letter-spacing: 1.3px; text-transform: uppercase; }
+.explore-heading h1 { font-size: clamp(42px, 6vw, 68px); letter-spacing: -4px; line-height: 1; margin: 13px 0 17px; }
+.explore-heading p { color: var(--muted); margin: 0; }
+.explore-grid { display: grid; gap: 22px; grid-template-columns: repeat(3, 1fr); }
+.explore-grid article { background: #fff; border: 1px solid var(--line); border-radius: 17px; overflow: hidden; }
+.explore-image { aspect-ratio: 1.55; display: block; overflow: hidden; }
+.explore-image img { height: 100%; object-fit: cover; transition: transform .3s; width: 100%; }
+.explore-image:hover img { transform: scale(1.035); }
+.explore-grid article > div { padding: 20px; }
+.explore-grid article > div > span { color: var(--purple); font-size: 9px; font-weight: 800; letter-spacing: .4px; text-transform: uppercase; }
+.explore-grid h2 { font-size: 20px; margin: 8px 0; }
+.explore-grid p { color: var(--muted); display: -webkit-box; font-size: 12px; line-height: 1.55; margin: 0; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+.explore-grid footer { align-items: center; border-top: 1px solid var(--line); display: flex; justify-content: space-between; margin-top: 18px; padding-top: 14px; }
+.explore-grid footer a, .explore-grid footer small { color: var(--muted); font-size: 10px; font-weight: 700; }
+.explore-empty { background: #fff; border: 1px dashed var(--line); border-radius: 17px; color: var(--muted); grid-column: 1 / -1; padding: 40px; }
+@media (max-width: 850px) { .explore-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .explore-main { padding: 48px 16px 70px; } .explore-grid { grid-template-columns: 1fr; } .explore-heading h1 { letter-spacing: -2.5px; } }
