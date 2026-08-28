@@ -134,11 +134,11 @@ export default async function DashboardPage({
             <div className="dashboard-project-list">
               {projectCards.map((project) => (
                 <article key={project.id}>
-                  <a href={project.url} target="_blank" rel="noreferrer">
+                  <Link href={`/projetos/${project.id}`}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={project.thumbnailUrl} alt={"Thumbnail do projeto " + project.title} />
-                  </a>
-                  <div><span>{project.status === "published" ? "Publicado" : "Rascunho"}</span><h3>{project.title}</h3><p>{project.description}</p><a href={project.url} target="_blank" rel="noreferrer">Visitar projeto <ArrowIcon /></a></div>
+                  </Link>
+                  <div><span>{project.status === "published" ? "Publicado" : "Rascunho"}</span><h3><Link href={`/projetos/${project.id}`}>{project.title}</Link></h3><p>{project.description}</p><a href={project.url} target="_blank" rel="noreferrer">Visitar projeto <ArrowIcon /></a></div>
                 </article>
               ))}
             </div>
