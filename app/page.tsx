@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const projects = [
   { title: "Cittadoc", description: "Análise inteligente de documentos e construção de árvores genealógicas em um só lugar.", author: "Marina Costa", role: "Product Designer", initials: "MC", technologies: ["Next.js", "TypeScript", "IA"], likes: 128, saves: 36, tone: "violet", symbol: "C" },
   { title: "Plantaria", description: "Planeje hortas urbanas, acompanhe cultivos e compartilhe colheitas com sua comunidade.", author: "Lucas Nunes", role: "Full-stack Developer", initials: "LN", technologies: ["React", "Supabase", "PWA"], likes: 94, saves: 21, tone: "green", symbol: "P" },
@@ -26,7 +28,7 @@ export default function Home() {
       <header className="topbar">
         <a className="brand" href="#top" aria-label="Devtrine, página inicial"><Logo /><span>devtrine</span></a>
         <nav className="desktop-nav" aria-label="Navegação principal"><a className="active" href="#projetos">Explorar</a><a href="#recentes">Recentes</a><a href="#sobre">Sobre</a></nav>
-        <div className="header-actions"><button className="text-button" type="button">Entrar</button><button className="primary-button" type="button">Criar conta</button></div>
+        <div className="header-actions"><Link className="text-button" href="/login">Entrar</Link><Link className="primary-button" href="/cadastro">Criar conta</Link></div>
       </header>
 
       <main id="top">
@@ -35,7 +37,7 @@ export default function Home() {
             <div className="eyebrow"><span /> Feito por quem constrói</div>
             <h1 id="hero-title">Mostre o que você<br /><em>construiu.</em></h1>
             <p>Descubra projetos reais, encontre inspiração e conecte-se com as pessoas por trás de cada ideia.</p>
-            <div className="hero-actions"><a className="primary-button large" href="#projetos">Explorar projetos <ArrowIcon /></a><button className="secondary-button large" type="button">Publicar projeto</button></div>
+            <div className="hero-actions"><a className="primary-button large" href="#projetos">Explorar projetos <ArrowIcon /></a><Link className="secondary-button large" href="/login">Publicar projeto</Link></div>
           </div>
           <div className="hero-orbit" aria-hidden="true"><span className="orbit-one" /><span className="orbit-two" /><b><Logo /></b></div>
         </section>
@@ -60,7 +62,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="closing" id="sobre"><span><Logo /></span><div><h2>Seu projeto merece ser visto.</h2><p>Crie seu perfil e compartilhe o que você está construindo.</p></div><button className="light-button" type="button">Começar agora <ArrowIcon /></button></section>
+        <section className="closing" id="sobre"><span><Logo /></span><div><h2>Seu projeto merece ser visto.</h2><p>Crie seu perfil e compartilhe o que você está construindo.</p></div><Link className="light-button" href="/cadastro">Começar agora <ArrowIcon /></Link></section>
       </main>
 
       <footer className="footer"><a className="brand" href="#top"><Logo /><span>devtrine</span></a><p>Projetos reais. Pessoas reais.</p><small>© 2026 Devtrine</small></footer>
