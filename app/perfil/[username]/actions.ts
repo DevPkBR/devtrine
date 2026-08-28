@@ -12,8 +12,8 @@ export async function toggleFollow(formData: FormData) {
   if (!data.user) redirect(`/login?next=/perfil/${encodeURIComponent(username)}`);
   if (!profileId || profileId === data.user.id) return;
 
-  const { data: existing } = await supabase.from("follows").select("follower_id").eq("follower_id", data.user.id).eq("followed_id", profileId).maybeSingle();
-  if (existing) await supabase.from("follows").delete().eq("follower_id", data.user.id).eq("followed_id", profileId);
-  else await supabase.from("follows").insert({ follower_id: data.user.id, followed_id: profileId });
+  const { data: existing } = await supabase.from("follows").select("follower_id").eq("follower_id", data.user.id).eq("following_id", profileId).maybeSingle();
+  if (existing) await supabase.from("follows").delete().eq("follower_id", data.user.id).eq("following_id", profileId);
+  else await supabase.from("follows").insert({ follower_id: data.user.id, following_id: profileId });
   revalidatePath(`/perfil/${username}`);
 }
