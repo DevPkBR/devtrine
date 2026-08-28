@@ -21,7 +21,6 @@ Somente decisões realmente não resolvidas devem permanecer aqui.
 
 ## Infraestrutura
 
-- Endereço público provisório do MVP.
 - Configuração dos ambientes de desenvolvimento e produção.
 
 ## Processo de decisão

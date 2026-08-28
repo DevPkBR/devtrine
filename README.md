@@ -2,6 +2,8 @@
 
 Rede social de portfólios para mostrar projetos reais e conhecer as pessoas que os criaram.
 
+MVP publicado em [devtrine.dev-pkbr.workers.dev](https://devtrine.dev-pkbr.workers.dev).
+
 ## Desenvolvimento
 
 1. Instale as dependências:
