@@ -25,12 +25,16 @@ export const metadata = {
   description: "Acompanhe seu perfil e os projetos publicados no Devtrine.",
 };
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ publicado?: string }>;
+}) {
   const supabase = await createClient();
   const { data: authData } = await supabase.auth.getUser();
   if (!authData.user) redirect("/login");
 
-  const [{ data: profile }, { count: projectCount }] = await Promise.all([
+  const [{ data: profile }, { count: projectCount }, { data: projects }] = await Promise.all([
     supabase
       .from("profiles")
       .select("name, username, bio")
@@ -40,6 +44,12 @@ export default async function DashboardPage() {
       .from("projects")
       .select("id", { count: "exact", head: true })
       .eq("author_id", authData.user.id),
+    supabase
+      .from("projects")
+      .select("id, title, description, url, thumbnail_path, status, created_at")
+      .eq("author_id", authData.user.id)
+      .order("created_at", { ascending: false })
+      .limit(6),
   ]);
 
   if (!profile) redirect("/onboarding");
@@ -51,6 +61,11 @@ export default async function DashboardPage() {
     .map((part: string) => part[0])
     .join("")
     .toUpperCase();
+  const { publicado } = await searchParams;
+  const projectCards = (projects ?? []).map((project) => ({
+    ...project,
+    thumbnailUrl: supabase.storage.from("project-thumbnails").getPublicUrl(project.thumbnail_path).data.publicUrl,
+  }));
 
   return (
     <div className="dashboard-shell">
@@ -76,10 +91,12 @@ export default async function DashboardPage() {
             <h1 id="dashboard-title">Olá, {firstName}.</h1>
             <p>Acompanhe seu perfil e mostre ao mundo o que você construiu.</p>
           </div>
-          <span className="disabled-action" aria-disabled="true" title="Disponível na próxima etapa">
+          <Link className="primary-button dashboard-publish" href="/projetos/novo">
             <PlusIcon /> Publicar projeto
-          </span>
+          </Link>
         </section>
+
+        {publicado ? <div className="dashboard-success" role="status">Projeto publicado com sucesso.</div> : null}
 
         <section className="dashboard-grid">
           <article className="dashboard-panel profile-summary">
@@ -100,8 +117,8 @@ export default async function DashboardPage() {
 
           <aside className="dashboard-panel next-step">
             <span className="panel-label">Próximo passo</span>
-            <h2>Publique seu primeiro projeto</h2>
-            <p>Na próxima entrega, você poderá cadastrar título, descrição, URL, imagem, categoria e tecnologias.</p>
+            <h2>{projectCount ? "Continue construindo" : "Publique seu primeiro projeto"}</h2>
+            <p>Cadastre título, descrição, URL, imagem, categoria e tecnologias para apresentar seu trabalho.</p>
             <span><i>1</i> Projeto real e acessível</span>
             <span><i>2</i> Uma boa apresentação</span>
             <span><i>3</i> Link direto para visitar</span>
@@ -113,11 +130,25 @@ export default async function DashboardPage() {
             <div><span className="panel-label">Portfólio</span><h2 id="projects-title">Seus projetos</h2></div>
             <Link href="/#projetos">Explorar comunidade <ArrowIcon /></Link>
           </div>
-          <div className="empty-projects">
-            <span><ProjectIcon /></span>
-            <h3>Seu portfólio começa aqui.</h3>
-            <p>Você ainda não publicou projetos. O fluxo de publicação será a próxima funcionalidade do MVP.</p>
-          </div>
+          {projectCards.length > 0 ? (
+            <div className="dashboard-project-list">
+              {projectCards.map((project) => (
+                <article key={project.id}>
+                  <a href={project.url} target="_blank" rel="noreferrer">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={project.thumbnailUrl} alt={"Thumbnail do projeto " + project.title} />
+                  </a>
+                  <div><span>{project.status === "published" ? "Publicado" : "Rascunho"}</span><h3>{project.title}</h3><p>{project.description}</p><a href={project.url} target="_blank" rel="noreferrer">Visitar projeto <ArrowIcon /></a></div>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <div className="empty-projects">
+              <span><ProjectIcon /></span>
+              <h3>Seu portfólio começa aqui.</h3>
+              <p>Publique seu primeiro projeto para começar a construir sua vitrine.</p>
+            </div>
+          )}
         </section>
       </main>
     </div>
