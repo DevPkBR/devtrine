@@ -30,7 +30,10 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci --package-lock=true
+        run: |
+          git checkout HEAD -- package-lock.json
+          node -e "const lock = require('./package-lock.json'); if (lock.lockfileVersion < 1) process.exit(1)"
+          npm ci
 
       - name: Lint
         run: npm run lint
