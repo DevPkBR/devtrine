@@ -14,9 +14,9 @@ export default async function PublicProfilePage({ params }: { params: Promise<{ 
   if (!profile) notFound();
   const [{ data: projects }, { count: followers }, { count: following }, { data: followed }] = await Promise.all([
     supabase.from("projects").select("id, title, description, thumbnail_path, project_likes(count)").eq("author_id", profile.id).eq("status", "published").order("published_at", { ascending: false }),
-    supabase.from("follows").select("follower_id", { count: "exact", head: true }).eq("followed_id", profile.id),
-    supabase.from("follows").select("followed_id", { count: "exact", head: true }).eq("follower_id", profile.id),
-    auth.user ? supabase.from("follows").select("follower_id").eq("follower_id", auth.user.id).eq("followed_id", profile.id).maybeSingle() : Promise.resolve({ data: null }),
+    supabase.from("follows").select("follower_id", { count: "exact", head: true }).eq("following_id", profile.id),
+    supabase.from("follows").select("following_id", { count: "exact", head: true }).eq("follower_id", profile.id),
+    auth.user ? supabase.from("follows").select("follower_id").eq("follower_id", auth.user.id).eq("following_id", profile.id).maybeSingle() : Promise.resolve({ data: null }),
   ]);
   const initials = profile.name.split(" ").slice(0, 2).map((part: string) => part[0]).join("").toUpperCase();
   const links = profile.links && typeof profile.links === "object" && !Array.isArray(profile.links) ? Object.entries(profile.links).filter((entry): entry is [string, string] => typeof entry[1] === "string" && entry[1].startsWith("http")) : [];
