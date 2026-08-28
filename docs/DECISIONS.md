@@ -88,8 +88,10 @@ Estado atual:
 
 - Não é necessário domínio próprio neste momento.
 - O MVP deve ser publicado para poder ser apresentado.
-- Cloudflare foi considerado aceitável.
-- A hospedagem final ainda deve ser documentada antes do deploy.
+- A hospedagem aprovada para o MVP é Cloudflare Workers no plano gratuito.
+- O Next.js 15 será adaptado com OpenNext para preservar Server Actions, SSR e middleware sem migrar a stack para vinext/Next.js 16.
+- Artefatos `.open-next`, arquivos `.dev.vars` e credenciais nunca são versionados.
+- As variáveis públicas do Supabase são configuradas diretamente no ambiente do Worker.
 
 ## Desenvolvimento
 
