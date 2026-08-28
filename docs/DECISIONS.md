@@ -84,6 +84,7 @@ Estado atual:
 - Interfaces e ações de autenticação, recuperação de senha e onboarding estão implementadas e validadas em produção.
 - Google OAuth e credenciais públicas do Supabase estão configurados no ambiente Cloudflare.
 - O dashboard autenticado é o destino após login e onboarding.
+- A publicação de projetos com URL, thumbnail, categoria e tecnologias está implementada.
 
 ## Infraestrutura
 
