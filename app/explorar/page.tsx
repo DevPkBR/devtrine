@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SocialNav } from "@/components/social-nav";
 import { createClient } from "@/lib/supabase/server";
 import "./explore.css";
 
@@ -7,15 +8,18 @@ export const metadata = { title: "Explorar projetos — Devtrine", description: 
 export default async function ExplorePage({ searchParams }: { searchParams: Promise<{ categoria?: string }> }) {
   const supabase = await createClient();
   const { categoria } = await searchParams;
+  const { data: auth } = await supabase.auth.getUser();
+  const { data: viewer } = auth.user ? await supabase.from("profiles").select("username").eq("id", auth.user.id).maybeSingle() : { data: null };
   const { data: categories } = await supabase.from("categories").select("id, name, slug").order("name");
   const selected = categories?.find((item) => item.slug === categoria);
   let query = supabase.from("projects").select("id, title, description, thumbnail_path, profiles!projects_author_id_fkey(name, username), project_technologies(technologies(name)), project_likes(count)").eq("status", "published").order("published_at", { ascending: false }).limit(30);
   if (selected) query = query.eq("category_id", selected.id);
   const { data: projects } = await query;
 
-  return <div className="explore-shell">
-    <header className="explore-topbar"><Link className="brand" href="/"><span className="logo-mark" aria-hidden="true"><i /><i /><i /></span><span>devtrine</span></Link><Link href="/dashboard">Meu dashboard</Link></header>
-    <main className="explore-main">
+  return <div className="social-shell explore-shell">
+    <SocialNav active="explore" username={viewer?.username}/>
+    <main className="explore-main social-content">
+      <header className="mobile-social-header"><Link className="social-brand" href="/"><span className="logo-mark" aria-hidden="true"><i/><i/><i/></span><strong>devtrine</strong></Link></header>
       <div className="explore-heading"><span>Comunidade</span><h1>Explore projetos reais.</h1><p>Conheça o trabalho e as pessoas por trás de cada ideia.</p></div>
       <nav className="filters" aria-label="Categorias"><Link className={!selected ? "selected" : ""} href="/explorar">Todos</Link>{(categories ?? []).map((item) => <Link className={selected?.id === item.id ? "selected" : ""} href={`/explorar?categoria=${item.slug}`} key={item.id}>{item.name}</Link>)}</nav>
       <section className="explore-grid" aria-label="Projetos publicados">
