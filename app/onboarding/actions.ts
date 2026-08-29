@@ -36,5 +36,5 @@ export async function completeOnboarding(formData: FormData) {
   if (error?.code === "23505") fail("Esse username já está em uso.");
   if (error) fail("Não foi possível concluir seu perfil. Tente novamente.");
 
-  redirect("/dashboard");
+  redirect("/feed");
 }

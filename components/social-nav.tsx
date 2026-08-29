@@ -12,11 +12,11 @@ function Icon({ name }: { name: SocialNavProps["active"] | "create" }) {
 
 export function SocialNav({ active, username }: SocialNavProps) {
   const items = [
-    { id: "home" as const, label: "Home", href: "/" },
+    { id: "home" as const, label: "Home", href: "/feed" },
     { id: "explore" as const, label: "Explorar", href: "/explorar" },
     { id: "create" as const, label: "Criar", href: "/projetos/novo" },
     { id: "saved" as const, label: "Salvos", href: "/salvos" },
     { id: "profile" as const, label: "Perfil", href: username ? `/perfil/${username}` : "/login" },
   ];
-  return <aside className="social-nav"><Link className="social-brand" href="/" aria-label="Devtrine"><span className="logo-mark" aria-hidden="true"><i/><i/><i/></span><strong>devtrine</strong></Link><nav aria-label="Navegação principal">{items.map((item) => <Link className={active === item.id ? "active" : ""} href={item.href} key={item.id}><Icon name={item.id}/><span>{item.label}</span></Link>)}</nav></aside>;
+  return <aside className="social-nav"><Link className="social-brand" href="/feed" aria-label="Devtrine"><span className="logo-mark" aria-hidden="true"><i/><i/><i/></span><strong>devtrine</strong></Link><nav aria-label="Navegação principal">{items.map((item) => <Link className={active === item.id ? "active" : ""} href={item.href} key={item.id}><Icon name={item.id}/><span>{item.label}</span></Link>)}</nav></aside>;
 }
