@@ -31,7 +31,7 @@ export async function signIn(formData: FormData) {
     .eq("id", data.user.id)
     .maybeSingle();
 
-  redirect(profile ? "/dashboard" : "/onboarding");
+  redirect(profile ? "/feed" : "/onboarding");
 }
 
 export async function signUp(formData: FormData) {
@@ -63,7 +63,7 @@ export async function signInWithGoogle() {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
-    options: { redirectTo: (await origin()) + "/auth/callback?next=/onboarding" },
+    options: { redirectTo: (await origin()) + "/auth/callback?next=/feed" },
   });
 
   if (error) redirect(destination("/login", "erro", "Não foi possível entrar com o Google."));
